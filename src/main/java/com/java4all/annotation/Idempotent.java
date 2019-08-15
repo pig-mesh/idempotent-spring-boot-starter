@@ -22,4 +22,11 @@ public @interface Idempotent {
      * @return
      */
     int isIdempotent() default 0;
+
+    /**
+     * 周期
+     * 单位：s
+     * @return
+     */
+    long expireTime() default 1;
 }
