@@ -34,3 +34,8 @@ An idempotent solution.
 
 业务执行时间：5s
 过期时间:6s
+
+
+线程1 存储6s
+执行1s-->删除了1条
+

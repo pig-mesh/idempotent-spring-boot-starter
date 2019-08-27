@@ -67,8 +67,11 @@ public class IdempotentAspect {
         if (null != rMapCache.get(key)){
             throw new IdempotentException("[idempotent]:"+info);
         }
+        
         String value = LocalDateTime.now().toString().replace("T", " ");
-        rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
+        synchronized (this){
+            rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
+        }
         threadLocal.set(key);
 
         LOGGER.info("[idempotent]:has stored key={},value={},expireTime={}{}",key,value,expireTime,timeUnit);
@@ -85,7 +88,8 @@ public class IdempotentAspect {
             return;
         }
         //TODO 如何使用删除更好的优化
-        mapCache.fastRemove(key);
+        long l = mapCache.fastRemove(key);
+        LOGGER.info("========>{}",l);
         LOGGER.info("[idempotent]:has removed key={}",key);
     }
 }
