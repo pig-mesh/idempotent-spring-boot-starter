@@ -84,6 +84,11 @@ public class IdempotentAspect {
             return;
         }
         RMapCache<Object, Object> mapCache = redisson.getMapCache(RMAPCACHE_KEY);
+        if(null == mapCache){
+            return;
+        }
+        //TODO 如何使用删除更好的优化
         mapCache.fastRemove(key);
+        LOGGER.info("[idempotent]:has removed key={}",key);
     }
 }
