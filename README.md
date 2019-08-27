@@ -29,3 +29,8 @@ An idempotent solution.
 未查到结果：存入key-value-expireTime
 2.请求结束后，直接删除key
 不管key是否存在，直接删除
+
+过期时间要大于业务执行时间
+
+业务执行时间：5s
+过期时间:6s

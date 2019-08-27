@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private UserService userServiceImpl;
 
-    @Idempotent(idempotent = true,expireTime = 3)
+    @Idempotent(idempotent = true,expireTime = 6)
     @GetMapping(value = "add")
     public String add(User user){
         userServiceImpl.add(user);
