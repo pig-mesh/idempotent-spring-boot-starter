@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author IT云清
+ * @author 汪忠祥
  */
 @Inherited
 @Target(ElementType.METHOD)
@@ -24,7 +24,7 @@ public @interface Idempotent {
     int isIdempotent() default 0;
 
     /**
-     * 周期
+     * 有效期
      * 单位：s
      * @return
      */

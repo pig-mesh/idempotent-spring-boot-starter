@@ -1,7 +1,9 @@
 package com.java4all.aspect;
 
+import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -10,7 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * @author IT云清
+ * @author 汪忠祥
  */
 @Aspect
 @Component
@@ -25,6 +27,13 @@ public class IdempotentAspect {
         ServletRequestAttributes requestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
+
+        String ip = request.getRemoteAddr();
+        String url = request.getRequestURL().toString();
+        String args = Arrays.toString(joinPoint.getArgs());
+
+        System.out.println("aaaaaa");
+
         //获取ip
         //获取参数
         //获取系统时间
