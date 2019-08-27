@@ -14,6 +14,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void add(User user) {
+        try {
+            Thread.sleep(5*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LOGGER.info("添加用户：{}",user);
     }
 }
