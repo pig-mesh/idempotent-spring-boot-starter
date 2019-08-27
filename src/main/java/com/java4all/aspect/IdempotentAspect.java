@@ -1,19 +1,27 @@
 package com.java4all.aspect;
 
+import com.java4all.IdempotentException;
 import com.java4all.annotation.Idempotent;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.Redisson;
-import org.redisson.api.RList;
 import org.redisson.api.RMapCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -24,6 +32,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class IdempotentAspect {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(IdempotentAspect.class);
+    private ThreadLocal threadLocal = new ThreadLocal();
+    private static final String RMAPCACHE_KEY = "idempotent";
+
     @Autowired
     private Redisson redisson;
 
@@ -32,59 +44,46 @@ public class IdempotentAspect {
     public void pointCut(){}
 
     @Before("pointCut()")
-    public void beforePointCut(JoinPoint joinPoint){
+    public void beforePointCut(JoinPoint joinPoint)throws Exception{
         ServletRequestAttributes requestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
         MethodSignature signature = (MethodSignature)joinPoint.getSignature();
         Method method = signature.getMethod();
-        if(method.isAnnotationPresent(Idempotent.class)){
-            Idempotent idempotent = method.getAnnotation(Idempotent.class);
-            boolean isIdempotent = idempotent.idempotent();
-            if(!isIdempotent){
-                return;
-            }
-
-            redisson.getMapCache("");
-
-            long expireTime = idempotent.expireTime();
-
-            
+        if(!method.isAnnotationPresent(Idempotent.class)){
+            return;
+        }
+        Idempotent idempotent = method.getAnnotation(Idempotent.class);
+        boolean isIdempotent = idempotent.idempotent();
+        if(!isIdempotent){
+            return;
         }
 
-
         String url = request.getRequestURL().toString();
-        String args = Arrays.toString(joinPoint.getArgs());
+        String argString  = Arrays.asList(joinPoint.getArgs()).toString();
+        long expireTime = idempotent.expireTime();
+        String info = idempotent.info();
+        TimeUnit timeUnit = idempotent.timeUnit();
+        String key = url + argString;
+        RMapCache<String, Object> rMapCache = redisson.getMapCache(RMAPCACHE_KEY);
+        if (null != rMapCache.get(key)){
+            throw new IdempotentException("[idempotent]:"+info);
+        }
+        String value = LocalDateTime.now().toString().replace("T", " ");
+        rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
+        threadLocal.set(key);
 
-        String info = url + args;
+        LOGGER.info("[idempotent]:has stored key={},value={},expireTime={}{}",key,value,expireTime,timeUnit);
+    }
 
-
-
-        System.out.println("aaaaaa");
-
-        //获取ip
-        //获取参数
-        //获取系统时间
-
-        //每一个请求进来
-        //md5(Ip+请求参数)=  000000aaaaa
-        // a存入redis 加有效期   (000000aaaaa,time)
-        //。。。走业务流程
-
-        //第二个请求进来
-        //md5(Ip+请求参数)=  000000aaaaa
-        //去redis查000000aaaaa
-        //有  踢回去，重复请求
-        //没有  没有，放行，存入进去
-
-
-
-
-        //请求开始时，存入标记
-        //请求结束时，删除标记
-        //之间来的请求，都校验标记，存在就踢回去。防止一个请求时间过长，还未处理完下一个又进来，还是没有防止住
-
-
+    @After("pointCut()")
+    public void afterPointCut(JoinPoint joinPoint){
+        Object key = threadLocal.get();
+        if(null == key){
+            return;
+        }
+        RMapCache<Object, Object> mapCache = redisson.getMapCache(RMAPCACHE_KEY);
+        mapCache.fastRemove(key);
     }
 }

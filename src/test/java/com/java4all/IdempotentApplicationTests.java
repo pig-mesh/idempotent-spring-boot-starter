@@ -22,7 +22,9 @@ public class IdempotentApplicationTests {
 	public void contextLoads() {
 		RMapCache<Object, Object> rMap = redisson.getMapCache("idempotent");
 		String key = "localhost:1999?name=wang";
-		rMap.putIfAbsent(key, LocalDateTime.now().toString().replace("T"," "),10, TimeUnit.SECONDS);
+		Object t = rMap.putIfAbsent(key, LocalDateTime.now().toString().replace("T", " "), 10,
+				TimeUnit.SECONDS);
+
 
 		Object o = rMap.get(key);
 		System.out.println(o.toString());
