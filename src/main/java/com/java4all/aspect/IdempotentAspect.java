@@ -4,9 +4,11 @@ import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,9 +30,17 @@ public class IdempotentAspect {
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
-        String ip = request.getRemoteAddr();
+        MethodSignature signature = (MethodSignature)joinPoint.getSignature();
+
+
+
+
         String url = request.getRequestURL().toString();
         String args = Arrays.toString(joinPoint.getArgs());
+
+        String info = url + args;
+
+
 
         System.out.println("aaaaaa");
 
