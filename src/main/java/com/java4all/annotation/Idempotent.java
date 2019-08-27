@@ -16,12 +16,12 @@ public @interface Idempotent {
 
 
     /**
-     * 是否幂等
-     * 0：非幂等
-     * 1：幂等
+     * 是否做幂等处理
+     * false：非幂等
+     * true：幂等
      * @return
      */
-    int isIdempotent() default 0;
+    boolean idempotent() default false;
 
     /**
      * 有效期

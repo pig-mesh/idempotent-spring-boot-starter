@@ -1,0 +1,34 @@
+server:
+  port: 7777
+
+#Redisson单机配置
+singleServerConfig:
+  address: "redis://192.168.13.155:6379"
+  password: RLredis13
+  #ping节点超时
+  pingTimeout: 1000
+  #连接等待超时
+  connectTimeout: 30000
+  #命令等待超时
+  timeout: 3000
+  #如果当前连接池里的连接数量超过了最小空闲连接数，而同时有连接空闲时间超过了该数值，那么这些连接将会自动被关闭，并从连接池里去掉。时间单位是毫秒。
+  idleConnectionTimeout: 10000
+  #如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。
+  retryAttempts: 3
+  #在一条命令发送失败以后，等待重试发送的时间间隔。时间单位是毫秒。
+  retryInterval: 3000
+  #当与某个节点的连接断开时，等待与其重新建立连接的时间间隔。时间单位是毫秒。
+  reconnectionTimeout: 3000
+  #在某个节点执行相同或不同命令时，连续 失败 failedAttempts（执行失败最大次数） 时，该节点将被从可用节点列表里清除，直到 reconnectionTimeout（重新连接时间间隔） 超时以后再次尝试。
+  failedAttempts: 3
+  #每个连接的最大订阅数量
+  subscriptionsPerConnection: 5
+  #用于发布和订阅连接的最小保持连接数（长连接）。Redisson内部经常通过发布和订阅来实现许多功能。长期保持一定数量的发布订阅连接是必须的。
+  subscriptionConnectionMinimumIdleSize: 1
+  #用于发布和订阅连接的连接池最大容量。连接池的连接数量自动弹性伸缩。
+  subscriptionConnectionPoolSize: 500
+  #最小保持连接数（长连接）。长期保持一定数量的连接有利于提高瞬时写入反应速度。
+  connectionMinimumIdleSize: 32
+  #连接池最大容量。连接池的连接数量自动弹性伸缩。
+  connectionPoolSize: 64
+

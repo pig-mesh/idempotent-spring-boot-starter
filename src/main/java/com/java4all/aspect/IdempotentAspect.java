@@ -1,14 +1,18 @@
 package com.java4all.aspect;
 
+import com.java4all.annotation.Idempotent;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.Redisson;
+import org.redisson.api.RList;
+import org.redisson.api.RMapCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,6 +23,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 @Component
 public class IdempotentAspect {
+
+    @Autowired
+    private Redisson redisson;
 
 
     @Pointcut("@annotation(com.java4all.annotation.Idempotent)")
@@ -31,8 +38,20 @@ public class IdempotentAspect {
         HttpServletRequest request = requestAttributes.getRequest();
 
         MethodSignature signature = (MethodSignature)joinPoint.getSignature();
+        Method method = signature.getMethod();
+        if(method.isAnnotationPresent(Idempotent.class)){
+            Idempotent idempotent = method.getAnnotation(Idempotent.class);
+            boolean isIdempotent = idempotent.idempotent();
+            if(!isIdempotent){
+                return;
+            }
 
+            redisson.getMapCache("");
 
+            long expireTime = idempotent.expireTime();
+
+            
+        }
 
 
         String url = request.getRequestURL().toString();
