@@ -51,4 +51,10 @@ public @interface Idempotent {
      * @return
      */
     String info() default "重复请求，请稍后重试";
+
+    /**
+     * 是否在业务完成后删除key
+     * @return
+     */
+    boolean delKey() default true;
 }

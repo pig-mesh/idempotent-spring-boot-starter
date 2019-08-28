@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userServiceImpl;
 
-    @Idempotent(idempotent = true,expireTime = 6,timeUnit = TimeUnit.SECONDS,info = "请勿重复添加用户")
+    @Idempotent(idempotent = true,expireTime = 2,timeUnit = TimeUnit.SECONDS,info = "请勿重复添加用户",delKey = false)
     @GetMapping(value = "add")
     public String add(User user){
         userServiceImpl.add(user);

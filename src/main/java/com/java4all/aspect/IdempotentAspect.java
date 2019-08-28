@@ -5,6 +5,8 @@ import com.java4all.annotation.Idempotent;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
@@ -19,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -31,8 +34,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class IdempotentAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IdempotentAspect.class);
-    private ThreadLocal threadLocal = new ThreadLocal();
+    private ThreadLocal<Map<String,Object>> threadLocal = new ThreadLocal();
     private static final String RMAPCACHE_KEY = "idempotent";
+    private static final String KEY = "key";
+    private static final String DELKEY = "delKey";
 
     @Autowired
     private Redisson redisson;
@@ -60,34 +65,49 @@ public class IdempotentAspect {
 
         String url = request.getRequestURL().toString();
         String argString  = Arrays.asList(joinPoint.getArgs()).toString();
+        String key = url + argString;
+
         long expireTime = idempotent.expireTime();
         String info = idempotent.info();
         TimeUnit timeUnit = idempotent.timeUnit();
-        String key = url + argString;
+        boolean delKey = idempotent.delKey();
+
         RMapCache<String, Object> rMapCache = redisson.getMapCache(RMAPCACHE_KEY);
-        if (null != rMapCache.get(key)){
+
+        String value = LocalDateTime.now().toString().replace("T", " ");
+        if(null != rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS)){
             throw new IdempotentException("[idempotent]:"+info);
         }
-        
-        String value = LocalDateTime.now().toString().replace("T", " ");
-        synchronized (this){
-            rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
-        }
-        threadLocal.set(key);
         LOGGER.info("[idempotent]:has stored key={},value={},expireTime={}{}",key,value,expireTime,timeUnit);
+
+        if(CollectionUtils.isEmpty(threadLocal.get())){
+            Map<String, Object> map = new HashMap<>(2);
+            map.put(KEY,key);
+            map.put(DELKEY,delKey);
+            threadLocal.set(map);
+        }
+
     }
 
     @After("pointCut()")
     public void afterPointCut(JoinPoint joinPoint){
-        Object key = threadLocal.get();
-        if(null == key){
+        Map<String,Object> map = threadLocal.get();
+        if(CollectionUtils.isEmpty(map)){
             return;
         }
+
         RMapCache<Object, Object> mapCache = redisson.getMapCache(RMAPCACHE_KEY);
         if(null == mapCache){
             return;
         }
-        mapCache.fastRemove(key);
-        LOGGER.info("[idempotent]:has removed key={}",key);
+
+        String key = map.get(KEY).toString();
+        boolean delKey = (boolean)map.get(DELKEY);
+
+        if(delKey){
+            System.out.println("delKey="+delKey);
+            mapCache.fastRemove(key);
+            LOGGER.info("[idempotent]:has removed key={}",key);
+        }
     }
 }
