@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * @author wangzhongxiang
- * @date 2019年08月27日 11:15:16
+ * @email 1186355422@qq.com
  */
 public class User {
 

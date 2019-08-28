@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author wangzhongxiang
+ * @email 1186355422@qq.com
  */
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService{
@@ -19,6 +20,6 @@ public class UserServiceImpl implements UserService{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        LOGGER.info("添加用户：{}",user);
+        LOGGER.info("添加用户成功");
     }
 }

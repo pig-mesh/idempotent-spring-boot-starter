@@ -1,6 +1,6 @@
 package com.java4all.aspect;
 
-import com.java4all.IdempotentException;
+import com.java4all.exception.IdempotentException;
 import com.java4all.annotation.Idempotent;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
@@ -24,6 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author 汪忠祥
+ * @email 1186355422@qq.com
  */
 @Aspect
 @Component

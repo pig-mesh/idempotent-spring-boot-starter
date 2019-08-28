@@ -1,10 +1,10 @@
-package com.java4all;
+package com.java4all.exception;
 
 import java.security.PrivilegedActionException;
 
 /**
  * @author wangzhongxiang
- * @date 2019年08月27日 16:35:51
+ * @email 1186355422@qq.com
  */
 public class IdempotentException extends Exception{
 
