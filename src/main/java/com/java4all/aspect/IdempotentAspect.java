@@ -75,10 +75,15 @@ public class IdempotentAspect {
         RMapCache<String, Object> rMapCache = redisson.getMapCache(RMAPCACHE_KEY);
 
         String value = LocalDateTime.now().toString().replace("T", " ");
-        if(null != rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS)){
-            throw new IdempotentException("[idempotent]:"+info);
+        Object v1;
+        synchronized (this){
+            v1 = rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
+            if(null != v1){
+                throw new IdempotentException("[idempotent]:"+info);
+            }else {
+                LOGGER.info("[idempotent]:has stored key={},value={},expireTime={}{},now={}",key,value,expireTime,timeUnit,LocalDateTime.now().toString());
+            }
         }
-        LOGGER.info("[idempotent]:has stored key={},value={},expireTime={}{}",key,value,expireTime,timeUnit);
 
         if(CollectionUtils.isEmpty(threadLocal.get())){
             Map<String, Object> map = new HashMap<>(2);
