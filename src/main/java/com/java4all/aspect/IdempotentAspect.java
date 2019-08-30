@@ -77,6 +77,9 @@ public class IdempotentAspect {
 
         String value = LocalDateTime.now().toString().replace("T", " ");
         Object v1;
+        if (null != rMapCache.get(key)){
+            throw new IdempotentException("[idempotent]:"+info);
+        }
         synchronized (this){
             v1 = rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
             if(null != v1){
