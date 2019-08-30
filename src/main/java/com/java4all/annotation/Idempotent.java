@@ -37,7 +37,7 @@ public @interface Idempotent {
      * 默认：1
      * @return
      */
-    long expireTime() default 1;
+    int expireTime() default 1;
 
     /**
      * 时间单位
@@ -54,7 +54,9 @@ public @interface Idempotent {
 
     /**
      * 是否在业务完成后删除key
+     * true:删除
+     * false:不删除
      * @return
      */
-    boolean delKey() default true;
+    boolean delKey() default false;
 }
