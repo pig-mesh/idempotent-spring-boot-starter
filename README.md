@@ -27,11 +27,11 @@ key=ip+url+args
 
 
 ### 2.使用
-引入注解和配置类，添加配置，直接在需要使用的接口上添加注解即可；
+引入注解，切面，配置类，异常类，修改配置，直接在需要使用的接口上添加注解即可；
 （后期会优化为jar）
 使用如下：
 ```java
-    @Idempotent(idempotent = true,expireTime = 6,timeUnit = TimeUnit.SECONDS,info = "请勿重复添加用户")
+    @Idempotent(idempotent = true,expireTime = 3,timeUnit = TimeUnit.SECONDS,info = "请勿重复添加用户",delKey = false)
     @GetMapping(value = "add")
     public String add(User user){
         userServiceImpl.add(user);
