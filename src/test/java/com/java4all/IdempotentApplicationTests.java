@@ -23,6 +23,13 @@ public class IdempotentApplicationTests {
 	@Autowired
 	private Redisson redisson;
 
+	@Test
+	public void testNullMap() {
+		RMapCache<Object, Object> aaa = redisson
+				.getMapCache("adsafasffsdaxdsdfsdffsdfsdffsadfafsaf");
+		aaa.putIfAbsent("wang",123);
+		System.out.println("aaaaa");
+	}
 
 	@Test
 	public void contextLoads() {

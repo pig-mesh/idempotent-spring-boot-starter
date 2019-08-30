@@ -72,6 +72,7 @@ public class IdempotentAspect {
         TimeUnit timeUnit = idempotent.timeUnit();
         boolean delKey = idempotent.delKey();
 
+        //do not need check null
         RMapCache<String, Object> rMapCache = redisson.getMapCache(RMAPCACHE_KEY);
 
         String value = LocalDateTime.now().toString().replace("T", " ");
@@ -102,7 +103,7 @@ public class IdempotentAspect {
         }
 
         RMapCache<Object, Object> mapCache = redisson.getMapCache(RMAPCACHE_KEY);
-        if(null == mapCache){
+        if(mapCache.size() == 0){
             return;
         }
 
@@ -110,7 +111,6 @@ public class IdempotentAspect {
         boolean delKey = (boolean)map.get(DELKEY);
 
         if(delKey){
-            System.out.println("delKey="+delKey);
             mapCache.fastRemove(key);
             LOGGER.info("[idempotent]:has removed key={}",key);
         }
