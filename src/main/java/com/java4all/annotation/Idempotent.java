@@ -35,6 +35,7 @@ public @interface Idempotent {
     /**
      * 有效期
      * 默认：1
+     * 有效期要大于程序执行时间，否则请求还是可能会进来
      * @return
      */
     int expireTime() default 1;
