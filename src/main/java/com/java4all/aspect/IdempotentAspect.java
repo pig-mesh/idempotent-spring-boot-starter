@@ -38,6 +38,7 @@ public class IdempotentAspect {
     private static final String RMAPCACHE_KEY = "idempotent";
     private static final String KEY = "key";
     private static final String DELKEY = "delKey";
+    private static final Integer ONE_HUNDRED = 100;
 
     @Autowired
     private Redisson redisson;
@@ -89,17 +90,16 @@ public class IdempotentAspect {
             }
         }
 
-        if(CollectionUtils.isEmpty(threadLocal.get())){
-            Map<String, Object> map = new HashMap<>(2);
-            map.put(KEY,key);
-            map.put(DELKEY,delKey);
-            threadLocal.set(map);
-        }
+        Map<String, Object> map =
+                CollectionUtils.isEmpty(threadLocal.get()) ? new HashMap<>(4):threadLocal.get();
+        map.put(KEY,key);
+        map.put(DELKEY,delKey);
+        threadLocal.set(map);
 
     }
 
     @After("pointCut()")
-    public void afterPointCut(JoinPoint joinPoint){
+    public void afterPointCut(JoinPoint joinPoint) throws InterruptedException {
         Map<String,Object> map = threadLocal.get();
         if(CollectionUtils.isEmpty(map)){
             return;
@@ -117,5 +117,8 @@ public class IdempotentAspect {
             mapCache.fastRemove(key);
             LOGGER.info("[idempotent]:has removed key={}",key);
         }
+
+        Thread.sleep(ONE_HUNDRED*1000);
+        threadLocal.remove();
     }
 }
