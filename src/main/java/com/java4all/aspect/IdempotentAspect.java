@@ -99,7 +99,7 @@ public class IdempotentAspect {
     }
 
     @After("pointCut()")
-    public void afterPointCut(JoinPoint joinPoint) throws InterruptedException {
+    public void afterPointCut(JoinPoint joinPoint){
         Map<String,Object> map = threadLocal.get();
         if(CollectionUtils.isEmpty(map)){
             return;
@@ -117,8 +117,6 @@ public class IdempotentAspect {
             mapCache.fastRemove(key);
             LOGGER.info("[idempotent]:has removed key={}",key);
         }
-
-        Thread.sleep(ONE_HUNDRED*1000);
         threadLocal.remove();
     }
 }
