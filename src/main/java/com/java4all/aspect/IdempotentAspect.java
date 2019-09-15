@@ -38,7 +38,6 @@ public class IdempotentAspect {
     private static final String RMAPCACHE_KEY = "idempotent";
     private static final String KEY = "key";
     private static final String DELKEY = "delKey";
-    private static final Integer ONE_HUNDRED = 100;
 
     @Autowired
     private Redisson redisson;
