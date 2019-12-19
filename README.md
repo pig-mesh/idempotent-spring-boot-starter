@@ -197,9 +197,15 @@ com.java4all.exception.IdempotentException: [idempotent]:请勿重复添加用�
 
 ```
 业务执行1s,设置过期时间3s，2s内10个重复请求：
+
 不添加注解时：
-[不添加注解](/./src/main/resources/image/nouse.png)
+
+![不添加注解](/./src/main/resources/image/nouse.png)
+
 添加注解时：
+
 @Idempotent(idempotent = true,expireTime = 3,timeUnit = TimeUnit.SECONDS,info = "请勿重复添加用户",delKey = false)
-[添加注解1](/./src/main/resources/image/use1.png)
-[添加注解1](/./src/main/resources/image/use2.png)
+
+![添加注解1](/./src/main/resources/image/use1.png)
+
+![添加注解1](/./src/main/resources/image/use2.png)
