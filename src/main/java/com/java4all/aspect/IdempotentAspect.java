@@ -74,7 +74,6 @@ public class IdempotentAspect {
 
         //do not need check null
         RMapCache<String, Object> rMapCache = redisson.getMapCache(RMAPCACHE_KEY);
-
         String value = LocalDateTime.now().toString().replace("T", " ");
         Object v1;
         if (null != rMapCache.get(key)){

@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * @author wangzhongxiang
+ * @author ITyunqing
  * @email 1186355422@qq.com
  */
 @Service("userServiceImpl")

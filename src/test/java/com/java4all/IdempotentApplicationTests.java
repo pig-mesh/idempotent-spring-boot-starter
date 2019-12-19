@@ -32,7 +32,7 @@ public class IdempotentApplicationTests {
 	}
 
 	@Test
-	public void contextLoads() {
+	public void testPutIfAbsent() {
 		RMapCache<Object, Object> rMap = redisson.getMapCache("idempotent");
 		String key = "localhost:1999?name=wang";
 		String tt1 = LocalDateTime.now().toString().replace("T", " ");
@@ -68,7 +68,7 @@ public class IdempotentApplicationTests {
 
 
 		Object o = rMap.get(key);
-		System.out.println(o.toString());
+		System.out.println("get by key:"+o.toString());
 
 		try {
 			Thread.sleep(5*1000);

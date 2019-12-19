@@ -3,7 +3,7 @@ package com.java4all.exception;
 import java.security.PrivilegedActionException;
 
 /**
- * @author wangzhongxiang
+ * @author ITyunqing
  * @email 1186355422@qq.com
  */
 public class IdempotentException extends Exception{

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * redisson分布式锁
- * @author wangzhongxiang
+ * @author ITyunqing
  * @date 2019年04月02日 10:00:54
  */
 @Component
