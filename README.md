@@ -196,3 +196,10 @@ com.java4all.exception.IdempotentException: [idempotent]:请勿重复添加用�
 2019-08-28 13:45:12.864  INFO 5468 --- [nio-7777-exec-4] com.java4all.aspect.IdempotentAspect     : [idempotent]:has removed key=http://localhost:7777/user/add[User{id='11', name='wang', age=26, province='陕西', city='商洛市', address='商南县', hobby='magic', money=100000.99, school='清华大学'}]
 
 ```
+业务执行1s,设置过期时间3s，2s内10个重复请求：
+不添加注解时：
+[不添加注解](/./src/main/resources/image/nouse.png)
+添加注解时：
+@Idempotent(idempotent = true,expireTime = 3,timeUnit = TimeUnit.SECONDS,info = "请勿重复添加用户",delKey = false)
+[添加注解1](/./src/main/resources/image/use1.png)
+[添加注解1](/./src/main/resources/image/use2.png)
