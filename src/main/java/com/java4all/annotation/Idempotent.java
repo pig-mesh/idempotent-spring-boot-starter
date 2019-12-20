@@ -30,7 +30,7 @@ public @interface Idempotent {
      * true：幂等
      * @return
      */
-    boolean idempotent() default false;
+    boolean isIdempotent() default false;
 
     /**
      * 有效期

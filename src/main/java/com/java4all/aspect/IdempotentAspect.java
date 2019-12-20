@@ -58,7 +58,7 @@ public class IdempotentAspect {
             return;
         }
         Idempotent idempotent = method.getAnnotation(Idempotent.class);
-        boolean isIdempotent = idempotent.idempotent();
+        boolean isIdempotent = idempotent.isIdempotent();
         if(!isIdempotent){
             return;
         }
@@ -77,6 +77,7 @@ public class IdempotentAspect {
         String value = LocalDateTime.now().toString().replace("T", " ");
         Object v1;
         if (null != rMapCache.get(key)){
+            //had stored
             throw new IdempotentException("[idempotent]:"+info);
         }
         synchronized (this){
