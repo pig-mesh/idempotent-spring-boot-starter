@@ -31,4 +31,6 @@ singleServerConfig:
   connectionMinimumIdleSize: 32
   #连接池最大容量。连接池的连接数量自动弹性伸缩。
   connectionPoolSize: 64
-
+spring:
+  application:
+    name: idempotent
