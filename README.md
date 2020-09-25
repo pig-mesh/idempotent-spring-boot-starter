@@ -103,4 +103,4 @@ boolean delKey() default false;
 
 #### 微信群
 
-![](https://gitee.com/pig4cloud/oss/raw/master/2020-9/20200901133142.png)
+![](https://i.loli.net/2020/09/25/SsWqJt2H157VbfI.png)
