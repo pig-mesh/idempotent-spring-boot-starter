@@ -6,7 +6,7 @@ package com.pig4cloud.plugin.idempotent.exception;
  *
  * @author ITyunqing
  */
-public class IdempotentException extends Exception {
+public class IdempotentException extends RuntimeException {
 
 	public IdempotentException() {
 		super();
