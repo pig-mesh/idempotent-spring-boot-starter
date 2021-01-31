@@ -95,7 +95,7 @@ public class IdempotentAspect {
 			throw new IdempotentException("[idempotent]:" + info);
 		}
 		synchronized (this) {
-			v1 = rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
+			v1 = rMapCache.putIfAbsent(key, value, expireTime, timeUnit);
 			if (null != v1) {
 				throw new IdempotentException("[idempotent]:" + info);
 			}
