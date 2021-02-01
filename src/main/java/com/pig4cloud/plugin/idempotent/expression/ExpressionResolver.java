@@ -33,8 +33,10 @@ public class ExpressionResolver implements KeyResolver {
 		String[] params = DISCOVERER.getParameterNames(getMethod(point));
 		StandardEvaluationContext context = new StandardEvaluationContext();
 
-		for (int len = 0; len < params.length; len++) {
-			context.setVariable(params[len], arguments[len]);
+		if(params != null && params.length > 0){
+			for (int len = 0; len < params.length; len++) {
+				context.setVariable(params[len], arguments[len]);
+			}
 		}
 
 		Expression expression = PARSER.parseExpression(idempotent.key());

@@ -37,7 +37,7 @@ public class IdempotentAspect {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IdempotentAspect.class);
 
-	private ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal();
+	private static final ThreadLocal<Map<String, Object>> THREAD_CACHE = ThreadLocal.withInitial(HashMap::new);
 
 	private static final String RMAPCACHE_KEY = "idempotent";
 
@@ -71,7 +71,7 @@ public class IdempotentAspect {
 		String key;
 
 		// 若没有配置 幂等 标识编号，则使用 url + 参数列表作为区分
-		if (StringUtils.isEmpty(idempotent.key())) {
+		if (!StringUtils.hasLength(idempotent.key())) {
 			String url = request.getRequestURL().toString();
 			String argString = Arrays.asList(joinPoint.getArgs()).toString();
 			key = url + argString;
@@ -95,7 +95,7 @@ public class IdempotentAspect {
 			throw new IdempotentException("[idempotent]:" + info);
 		}
 		synchronized (this) {
-			v1 = rMapCache.putIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
+			v1 = rMapCache.putIfAbsent(key, value, expireTime, timeUnit);
 			if (null != v1) {
 				throw new IdempotentException("[idempotent]:" + info);
 			}
@@ -105,16 +105,14 @@ public class IdempotentAspect {
 			}
 		}
 
-		Map<String, Object> map = CollectionUtils.isEmpty(threadLocal.get()) ? new HashMap<>(4) : threadLocal.get();
+		Map<String, Object> map = THREAD_CACHE.get();
 		map.put(KEY, key);
 		map.put(DELKEY, delKey);
-		threadLocal.set(map);
-
 	}
 
 	@After("pointCut()")
 	public void afterPointCut(JoinPoint joinPoint) {
-		Map<String, Object> map = threadLocal.get();
+		Map<String, Object> map = THREAD_CACHE.get();
 		if (CollectionUtils.isEmpty(map)) {
 			return;
 		}
@@ -131,7 +129,7 @@ public class IdempotentAspect {
 			mapCache.fastRemove(key);
 			LOGGER.info("[idempotent]:has removed key={}", key);
 		}
-		threadLocal.remove();
+		THREAD_CACHE.remove();
 	}
 
 }
