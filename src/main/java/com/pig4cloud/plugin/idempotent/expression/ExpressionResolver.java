@@ -5,6 +5,8 @@ package com.pig4cloud.plugin.idempotent.expression;
  * @date 2020/9/25
  */
 
+import java.lang.reflect.Method;
+
 import com.pig4cloud.plugin.idempotent.annotation.Idempotent;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -12,8 +14,6 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-
-import java.lang.reflect.Method;
 
 /**
  * @author lengleng
@@ -33,7 +33,7 @@ public class ExpressionResolver implements KeyResolver {
 		String[] params = DISCOVERER.getParameterNames(getMethod(point));
 		StandardEvaluationContext context = new StandardEvaluationContext();
 
-		if(params != null && params.length > 0){
+		if (params != null && params.length > 0) {
 			for (int len = 0; len < params.length; len++) {
 				context.setVariable(params[len], arguments[len]);
 			}

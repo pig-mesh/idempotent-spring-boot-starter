@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.0</version>
+        <version>2.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>idempotent</name>
     <description>An idempotent solution</description>
 	<url>https://pig4cloud.com</url>
