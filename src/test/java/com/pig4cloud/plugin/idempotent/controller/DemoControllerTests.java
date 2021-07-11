@@ -56,7 +56,6 @@ class DemoControllerTests {
 		}
 	}
 
-
 	@RepeatedTest(10)
 	@Execution(CONCURRENT)
 	void getMultiThreadNoKeyResutTest() {

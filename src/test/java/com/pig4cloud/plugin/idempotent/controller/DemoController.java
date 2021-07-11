@@ -18,7 +18,6 @@ public class DemoController {
 		return "success";
 	}
 
-
 	@GetMapping("/noKey")
 	@Idempotent(expireTime = 3, info = "请勿重复查询")
 	public String noKey() throws Exception {
