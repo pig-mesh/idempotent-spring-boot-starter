@@ -56,7 +56,7 @@ public class IdempotentAspect {
 	}
 
 	@Before("pointCut()")
-	public void beforePointCut(JoinPoint joinPoint) throws Exception {
+	public void beforePointCut(JoinPoint joinPoint) {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
 				.getRequestAttributes();
 		HttpServletRequest request = requestAttributes.getRequest();

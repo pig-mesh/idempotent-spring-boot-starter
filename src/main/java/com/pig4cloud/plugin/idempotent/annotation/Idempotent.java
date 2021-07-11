@@ -15,7 +15,7 @@ public @interface Idempotent {
 	 * 幂等操作的唯一标识，使用spring el表达式 用#来引用方法参数
 	 * @return Spring-EL expression
 	 */
-	String key();
+	String key() default "";
 
 	/**
 	 * 有效期 默认：1 有效期要大于程序执行时间，否则请求还是可能会进来

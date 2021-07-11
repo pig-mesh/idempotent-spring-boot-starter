@@ -1,8 +1,5 @@
 package com.pig4cloud.plugin.idempotent.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -15,6 +12,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author lengleng
@@ -51,6 +50,18 @@ class DemoControllerTests {
 	void getMultiThreadResutTest() {
 		try {
 			mockMvc.perform(get("/get?key=10")).andExpect(status().isOk());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	@RepeatedTest(10)
+	@Execution(CONCURRENT)
+	void getMultiThreadNoKeyResutTest() {
+		try {
+			mockMvc.perform(get("/noKey")).andExpect(status().isOk());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
