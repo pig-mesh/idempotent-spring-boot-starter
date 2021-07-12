@@ -21,7 +21,7 @@ jobs:
           distribution: 'adopt'
 
       - name: mvn clean install
-        run: mvn clean install
+        run: mvn clean install -Dmaven.test.skip=true
 
       - name: mvn spring-javaformat:validate
         run: mvn spring-javaformat:validate
