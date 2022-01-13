@@ -92,12 +92,12 @@ public class IdempotentAspect {
 		Object v1;
 		if (null != rMapCache.get(key)) {
 			// had stored
-			throw new IdempotentException("[idempotent]:" + info);
+			throw new IdempotentException(info);
 		}
 		synchronized (this) {
 			v1 = rMapCache.putIfAbsent(key, value, expireTime, timeUnit);
 			if (null != v1) {
-				throw new IdempotentException("[idempotent]:" + info);
+				throw new IdempotentException(info);
 			}
 			else {
 				LOGGER.info("[idempotent]:has stored key={},value={},expireTime={}{},now={}", key, value, expireTime,
