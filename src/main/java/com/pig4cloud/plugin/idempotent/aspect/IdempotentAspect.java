@@ -80,6 +80,10 @@ public class IdempotentAspect {
 			// 使用jstl 规则区分
 			key = keyResolver.resolver(idempotent, joinPoint);
 		}
+		// 当配置了el表达式但是所选字段为空时,会抛出异常,兜底使用url做标识
+		if(key == null){
+			key = request.getRequestURL().toString();
+		}
 
 		long expireTime = idempotent.expireTime();
 		String info = idempotent.info();
