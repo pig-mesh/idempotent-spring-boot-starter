@@ -40,7 +40,7 @@ key=ip+url+args
 <dependency>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
 </dependency>
 ```
 
