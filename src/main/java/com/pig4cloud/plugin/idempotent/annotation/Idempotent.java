@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 public @interface Idempotent {
 
 	/**
-	 * <p>如果是实体类的话,默认拦截不会生效.
-	 * objects.toString()会返回不同地址.
+	 * <p>
+	 * 如果是实体类的话,默认拦截不会生效. objects.toString()会返回不同地址.
 	 * </p>
 	 * 幂等操作的唯一标识，使用spring el表达式 用#来引用方法参数
 	 * @return Spring-EL expression

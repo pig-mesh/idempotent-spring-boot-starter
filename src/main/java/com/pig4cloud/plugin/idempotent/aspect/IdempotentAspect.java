@@ -81,7 +81,7 @@ public class IdempotentAspect {
 			key = keyResolver.resolver(idempotent, joinPoint);
 		}
 		// 当配置了el表达式但是所选字段为空时,会抛出异常,兜底使用url做标识
-		if(key == null){
+		if (key == null) {
 			key = request.getRequestURL().toString();
 		}
 
