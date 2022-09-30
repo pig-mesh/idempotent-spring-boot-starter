@@ -1,27 +1,48 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: idempotent-spring-boot-starter
+name: excel 组件 构建action
 
 on:
   push:
-    branches: [ master,dev ]
+    branches: [ master ]
   pull_request:
-    branches: [ master,dev ]
+    branches: [ master ]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-
-      - name: mvn clean install
-        run: mvn clean install -Dmaven.test.skip=true
-
-      - name: mvn spring-javaformat:validate
-        run: mvn spring-javaformat:validate
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Build with Maven
+      run: mvn clean install
+    - name: spring-javaformat:validate
+      run: mvn spring-javaformat:validate
+      # 发送钉钉消息
+    - name: build success
+      if: ${{ success() && github.event_name == 'push'}}
+      uses: fifsky/dingtalk-action@master
+      with:
+        url: ${{ secrets.DINGTALK_WEBHOOK}}
+        type: markdown
+        content: |
+          # 💯👨‍💻 Success 🎉🎉🎉
+          > 云效构建: https://github.com/pig-mesh/excel-spring-boot-starter success
+          > ^_^ from github action message
+    - name: maven build failure
+      if: ${{ failure() && github.event_name == 'push' }}
+      uses: fifsky/dingtalk-action@master
+      with:
+        url: ${{ secrets.DINGTALK_WEBHOOK}}
+        type: markdown
+        content: |
+          # 💤🤷‍♀️ failure 🙅‍♂️💣
+          > 云效构建: https://github.com/pig-mesh/excel-spring-boot-starter failure
+          > (⋟﹏⋞)   from github action message
