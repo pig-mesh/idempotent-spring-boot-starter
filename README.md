@@ -42,7 +42,28 @@ key=ip+url+args
     <artifactId>idempotent-spring-boot-starter</artifactId>
     <version>0.1.0</version>
 </dependency>
+
+- 使用快照
+
+<dependency>
+    <groupId>com.pig4cloud.plugin</groupId>
+    <artifactId>idempotent-spring-boot-starter</artifactId>
+    <version>0.1.1-SNAPSHOT</version>
+</dependency>
+
+<repositories>
+  <repository>
+      <id>snapshots</id>
+      <name>Excel Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <releases>
+          <enabled>false</enabled>
+      </releases>
+  </repository>
+</repositories> 
 ```
+
+
 
 - 2. 配置 redis 链接相关信息
 

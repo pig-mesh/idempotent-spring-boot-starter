@@ -22,7 +22,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn clean install -Dmaven.test.skip=true
     - name: spring-javaformat:validate
       run: mvn spring-javaformat:validate
       # 发送钉钉消息
@@ -34,7 +34,7 @@ jobs:
         type: markdown
         content: |
           # 💯👨‍💻 Success 🎉🎉🎉
-          > 云效构建: https://github.com/pig-mesh/excel-spring-boot-starter success
+          > 云效构建: https://github.com/pig-mesh/idempotent-spring-boot-starter success
           > ^_^ from github action message
     - name: maven build failure
       if: ${{ failure() && github.event_name == 'push' }}
@@ -44,5 +44,5 @@ jobs:
         type: markdown
         content: |
           # 💤🤷‍♀️ failure 🙅‍♂️💣
-          > 云效构建: https://github.com/pig-mesh/excel-spring-boot-starter failure
+          > 云效构建: https://github.com/pig-mesh/idempotent-spring-boot-starter failure
           > (⋟﹏⋞)   from github action message
