@@ -3,6 +3,7 @@ package com.pig4cloud.plugin.idempotent.aspect;
 import com.pig4cloud.plugin.idempotent.annotation.Idempotent;
 import com.pig4cloud.plugin.idempotent.exception.IdempotentException;
 import com.pig4cloud.plugin.idempotent.expression.KeyResolver;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,6 +12,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.Redisson;
 import org.redisson.api.RMapCache;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class IdempotentAspect {
 	private static final String DELKEY = "delKey";
 
 	@Autowired
-	private Redisson redisson;
+	private RedissonClient redissonClient;
 
 	@Autowired
 	private KeyResolver keyResolver;
@@ -91,7 +92,7 @@ public class IdempotentAspect {
 		boolean delKey = idempotent.delKey();
 
 		// do not need check null
-		RMapCache<String, Object> rMapCache = redisson.getMapCache(RMAPCACHE_KEY);
+		RMapCache<String, Object> rMapCache = redissonClient.getMapCache(RMAPCACHE_KEY);
 		String value = LocalDateTime.now().toString().replace("T", " ");
 		Object v1;
 		if (null != rMapCache.get(key)) {
@@ -121,7 +122,7 @@ public class IdempotentAspect {
 			return;
 		}
 
-		RMapCache<Object, Object> mapCache = redisson.getMapCache(RMAPCACHE_KEY);
+		RMapCache<Object, Object> mapCache = redissonClient.getMapCache(RMAPCACHE_KEY);
 		if (mapCache.size() == 0) {
 			return;
 		}
