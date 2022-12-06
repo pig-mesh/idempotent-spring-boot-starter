@@ -36,6 +36,11 @@ key=ip+url+args
 
 - 1. 引入依赖
 
+| 版本 | 支持 |
+|-------|--|
+| 0.3.0 | 适配 SpringBoot3.x |
+| 0.1.0 | 适配 SpringBoot2.x |
+
 ```java
 <dependency>
     <groupId>com.pig4cloud.plugin</groupId>

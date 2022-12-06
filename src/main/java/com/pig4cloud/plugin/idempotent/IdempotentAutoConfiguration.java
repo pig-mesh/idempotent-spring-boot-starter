@@ -3,6 +3,7 @@ package com.pig4cloud.plugin.idempotent;
 import com.pig4cloud.plugin.idempotent.aspect.IdempotentAspect;
 import com.pig4cloud.plugin.idempotent.expression.ExpressionResolver;
 import com.pig4cloud.plugin.idempotent.expression.KeyResolver;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * 幂等插件初始化
  */
+@AutoConfiguration
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class IdempotentAutoConfiguration {
