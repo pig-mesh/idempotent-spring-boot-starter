@@ -10,7 +10,8 @@ import java.lang.reflect.Method;
 import com.pig4cloud.plugin.idempotent.annotation.Idempotent;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -25,7 +26,7 @@ public class ExpressionResolver implements KeyResolver {
 
 	private static final SpelExpressionParser PARSER = new SpelExpressionParser();
 
-	private static final LocalVariableTableParameterNameDiscoverer DISCOVERER = new LocalVariableTableParameterNameDiscoverer();
+	private static final ParameterNameDiscoverer DISCOVERER = new DefaultParameterNameDiscoverer();
 
 	@Override
 	public String resolver(Idempotent idempotent, JoinPoint point) {
