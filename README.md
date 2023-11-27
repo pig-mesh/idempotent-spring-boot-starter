@@ -36,16 +36,16 @@ key=ip+url+args
 
 - 1. 引入依赖
 
-| 版本 | 支持 |
+| 版本    | 支持 |
 |-------|--|
-| 0.3.0 | 适配 SpringBoot3.x |
+| 0.4.0 | 适配 SpringBoot3.x |
 | 0.1.0 | 适配 SpringBoot2.x |
 
 ```java
 <dependency>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.1.0</version>
+    <version>0.4.0</version>
 </dependency>
 
 - 使用快照
@@ -53,7 +53,7 @@ key=ip+url+args
 <dependency>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.4.1-SNAPSHOT</version>
 </dependency>
 
 <repositories>
