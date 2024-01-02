@@ -34,7 +34,7 @@ jobs:
 
       - name: Publish to Maven Central
         if: contains('${{ env.RELEASE_VERSION }}', 'SNAPSHOT')
-        run: mvn clean deploy -P snapshot -Dmaven.test.skip=true
+        run: mvn clean deploy -P snapshot
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}

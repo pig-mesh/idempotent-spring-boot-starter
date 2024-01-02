@@ -7,15 +7,16 @@ import org.springframework.core.ParameterNameDiscoverer;
 
 class ExpressionResolverTest {
 
-    private static final ParameterNameDiscoverer DISCOVERER = new DefaultParameterNameDiscoverer();
+	private static final ParameterNameDiscoverer DISCOVERER = new DefaultParameterNameDiscoverer();
 
+	@Test
+	public void testParameterNameDiscoverer() throws Exception {
+		String[] parameterNames = DISCOVERER
+				.getParameterNames(DemoController.class.getDeclaredMethod("get", String.class));
 
-    @Test
-    public void testParameterNameDiscoverer() throws Exception{
-        String[] parameterNames = DISCOVERER.getParameterNames(DemoController.class.getDeclaredMethod("get",String.class));
+		for (String parameterName : parameterNames) {
+			System.out.println(parameterName);
+		}
+	}
 
-        for (String parameterName : parameterNames) {
-            System.out.println(parameterName);
-        }
-    }
 }
