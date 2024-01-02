@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
+        <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.4.0</version>
+    <version>0.1.0-SNAPSHOT</version>
     <name>idempotent</name>
     <description>An idempotent solution</description>
     <url>https://pig4cloud.com</url>
@@ -38,7 +38,7 @@
     <properties>
         <java.version>17</java.version>
         <mica.version>3.0.0</mica.version>
-        <redisson.version>3.24.3</redisson.version>
+        <redisson.version>3.25.2</redisson.version>
         <spring.checkstyle.plugin>0.0.32</spring.checkstyle.plugin>
     </properties>
 
