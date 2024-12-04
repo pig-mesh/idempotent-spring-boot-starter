@@ -73,7 +73,7 @@ public class IdempotentAspect {
 
 		// 若没有配置 幂等 标识编号，则使用 url + 参数列表作为区分
 		if (!StringUtils.hasLength(idempotent.key())) {
-			String url = request.getRequestURL().toString();
+			String url = request.getRequestURI();
 			String argString = Arrays.asList(joinPoint.getArgs()).toString();
 			key = url + argString;
 		}
@@ -83,7 +83,7 @@ public class IdempotentAspect {
 		}
 		// 当配置了el表达式但是所选字段为空时,会抛出异常,兜底使用url做标识
 		if (key == null) {
-			key = request.getRequestURL().toString();
+			key = request.getRequestURI();
 		}
 
 		long expireTime = idempotent.expireTime();
