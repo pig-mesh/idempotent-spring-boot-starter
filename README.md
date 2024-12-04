@@ -38,37 +38,16 @@ key=ip+url+args
 
 | 版本    | 支持 |
 |-------|--|
-| 0.4.0 | 适配 SpringBoot3.x |
+| 0.5.0 | 适配 SpringBoot3.x |
 | 0.1.0 | 适配 SpringBoot2.x |
 
 ```java
 <dependency>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 </dependency>
-
-- 使用快照
-
-<dependency>
-    <groupId>com.pig4cloud.plugin</groupId>
-    <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
-</dependency>
-
-<repositories>
-  <repository>
-      <id>snapshots</id>
-      <name>Excel Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <releases>
-          <enabled>false</enabled>
-      </releases>
-  </repository>
-</repositories> 
 ```
-
-
 
 - 2. 配置 redis 链接相关信息
 
