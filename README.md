@@ -53,9 +53,10 @@ key=ip+url+args
 
 ```yaml
 spring:
-  redis:
-    host: 127.0.0.1
-    port: 6379
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
 ```
 
 理论是支持 [redisson-spring-boot-starter](https://github.com/redisson/redisson/tree/master/redisson-spring-boot-starter) 全部配置
@@ -104,6 +105,19 @@ String info() default "重复请求，请稍后重试";
 
 ```java
 boolean delKey() default false;
+```
+- 6. 全局异常处理：当幂等性触发后，切面会抛出 IdempotentException 异常。需要在全局异常处理器中捕获此异常并处理，返回合适的错误信息。
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(IdempotentException.class)
+    public ResponseEntity<String> handleIdempotentException(IdempotentException ex) {
+        // 处理幂等异常，返回自定义的错误信息或业务逻辑
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+}
 ```
 
 #### 微信群
