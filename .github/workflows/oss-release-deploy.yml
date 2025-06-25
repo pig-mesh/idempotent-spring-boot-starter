@@ -19,7 +19,7 @@ jobs:
           cache: maven
 
       - name: Setup Maven Central
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with: # overwrite settings.xml
           java-version: '17'
           distribution: 'adopt'
