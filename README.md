@@ -1,5 +1,6 @@
 # idempotent 幂等处理方案
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.pig4cloud.plugin/idempotent-spring-boot-starter.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.pig4cloud.plugin%22%20AND%20a:%22idempotent-spring-boot-starter%22)
 
 是对原有 [idempotent](https://github.com/it4alla/idempotent) 代码重构和功能增强。
 
@@ -38,14 +39,14 @@ key=ip+url+args
 
 | 版本    | 支持 |
 |-------|--|
-| 0.5.0 | 适配 SpringBoot3.x |
+| 0.6.0 | 适配 SpringBoot3.x |
 | 0.1.0 | 适配 SpringBoot2.x |
 
 ```java
 <dependency>
     <groupId>com.pig4cloud.plugin</groupId>
     <artifactId>idempotent-spring-boot-starter</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -122,4 +123,4 @@ public class GlobalExceptionHandler {
 
 #### 微信群
 
-![](https://i.loli.net/2020/09/25/SsWqJt2H157VbfI.png)
+![](https://minio.pigx.vip/oss/202412/1735262426.png)
